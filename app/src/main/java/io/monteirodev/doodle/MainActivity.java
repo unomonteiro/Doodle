@@ -70,27 +70,29 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    public void replaceFragment(Fragment fragment,Fragment hideFragment,int tabPosition) {
+    public void replaceFragment(Fragment showFragment,Fragment hideFragment,int tabPosition) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (tabPosition == 0 && !hasDoodleOne) {
-            ft.add(R.id.frame_container, fragment);
+            ft.add(R.id.frame_container, doodleOne);
         } else if (tabPosition == 1 && !hasDoodleTwo) {
-            ft.add(R.id.frame_container, fragment);
+            ft.add(R.id.frame_container, doodleTwo);
         } else if (hasDoodleOne && hasDoodleTwo){
             ft.hide(hideFragment);
-            ft.show(fragment);
+            ft.show(showFragment);
         } else {
             //if none of the cases. discard and show fragment
-            ft.replace(R.id.frame_container, fragment);
+            ft.replace(R.id.frame_container, showFragment);
         }
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
     }
     public void paintClicked(View view){
-        FragmentDoodle instanceFragment =
-                (FragmentDoodle)getSupportFragmentManager().findFragmentById(R.id.frame_container);
-        if (instanceFragment.getId() == doodleTwo.getId()) doodleTwo.paintClicked(view);
-        else doodleOne.paintClicked(view);
+        int index = allTabs.getSelectedTabPosition();
+        if (index == 0){
+            doodleOne.paintClicked(view);
+        } else if (index == 1){
+            doodleTwo.paintClicked(view);
+        }
     }
 }

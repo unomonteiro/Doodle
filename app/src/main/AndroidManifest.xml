@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.monteirodev.doodle">
+    package="io.monteirodev.doodle"
+    android:versionCode="2"
+    android:versionName="1.0">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.read_external_storage" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
