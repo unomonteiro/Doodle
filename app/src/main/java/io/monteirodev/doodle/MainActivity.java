@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentDoodle doodleOne;
     private FragmentDoodle doodleTwo;
 
+    private boolean hasDoodleOne;
+    private boolean hasDoodleTwo;
     private TabLayout allTabs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         allTabs = (TabLayout) findViewById(R.id.tabs);
     }
     private void setupTabLayout() {
-
+        hasDoodleOne = false;
+        hasDoodleTwo = false;
         doodleOne = new FragmentDoodle();
         doodleTwo = new FragmentDoodle();
         allTabs.addTab(allTabs.newTab().setText("Doodle One"),true);
@@ -58,18 +61,29 @@ public class MainActivity extends AppCompatActivity {
         switch (tabPosition)
         {
             case 1 :
-                //replaceFragment(fragmentTwo);
-                replaceFragment(doodleTwo);
+                replaceFragment(doodleTwo,doodleOne,tabPosition);
+                hasDoodleTwo = true;
                 break;
             default:
-                replaceFragment(doodleOne);
+                replaceFragment(doodleOne,doodleTwo,tabPosition);
+                hasDoodleOne = true;
                 break;
         }
     }
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment,Fragment hideFragment,int tabPosition) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.frame_container, fragment);
+        if (tabPosition == 0 && !hasDoodleOne) {
+            ft.add(R.id.frame_container, fragment);
+        } else if (tabPosition == 1 && !hasDoodleTwo) {
+            ft.add(R.id.frame_container, fragment);
+        } else if (hasDoodleOne && hasDoodleTwo){
+            ft.hide(hideFragment);
+            ft.show(fragment);
+        } else {
+            //if none of the cases. discard and show fragment
+            ft.replace(R.id.frame_container, fragment);
+        }
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
     }
