@@ -19,6 +19,12 @@
             android:contentDescription="@string/start_new"
             android:src="@drawable/new_pic" />
         <ImageButton
+            android:id="@+id/brush_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/brush"
+            android:src="@drawable/brush" />
+        <ImageButton
             android:id="@+id/save_btn"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"

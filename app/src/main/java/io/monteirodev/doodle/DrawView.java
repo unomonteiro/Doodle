@@ -10,6 +10,9 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.util.TypedValue;
 
 public class DrawView extends View {
 
@@ -23,6 +26,8 @@ public class DrawView extends View {
     private Canvas drawCanvas;
     //canvas bitmap
     private Bitmap canvasBitmap;
+
+    private float brushSize, lastBrushSize;
 
     public DrawView(Context context, AttributeSet attr){
         super(context, attr);
@@ -83,9 +88,12 @@ public class DrawView extends View {
 
         drawPaint = new Paint();
 
+        brushSize = getResources().getInteger(R.integer.medium_size);
+        lastBrushSize = brushSize;
+
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
+        drawPaint.setStrokeWidth(brushSize);
 
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -93,12 +101,27 @@ public class DrawView extends View {
 
         //set dithering by passing a parameter to the constructor.
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+
+
     }
 
     public void startNew(){
         //drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         drawCanvas.drawColor(paintColor, PorterDuff.Mode.SRC);
         invalidate();
+    }
+
+    public void setBrushSize(float newSize){
+        brushSize=TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                newSize, getResources().getDisplayMetrics());
+        drawPaint.setStrokeWidth(brushSize);
+    }
+
+    public void setLastBrushSize(float lastSize){
+        lastBrushSize=lastSize;
+    }
+    public float getLastBrushSize(){
+        return lastBrushSize;
     }
 
 }
